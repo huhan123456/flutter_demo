@@ -11,6 +11,7 @@ class HomeViewModel with ChangeNotifier {
 
   List<BannerItemData>? bannerList;
   List<HomeListItem>? docList;
+  int page = 1;
 
   void initDio(){
     dio.options = BaseOptions(
@@ -34,11 +35,20 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
   //获取首页文章列表
-  Future getDocList() async {
-    Response response = await DioUtils().get('article/list/0/json');
+  Future getDocList(bool loadMore) async {
+    if(loadMore){
+      page++;
+    }else{
+      page = 1;
+    }
+    Response response = await DioUtils().get('article/list/$page/json');
     HomeListData homeListData = HomeListData.fromJson(response.data);
     if (homeListData.data != null && homeListData.data?.datas != null) {
-      docList = homeListData.data?.datas;
+      if(loadMore){
+        docList?.addAll(homeListData.data?.datas ?? []);
+      }else{
+        docList = homeListData.data?.datas;
+      }
     } else {
       docList = [];
     }

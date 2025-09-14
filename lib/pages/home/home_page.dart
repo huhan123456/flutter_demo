@@ -3,6 +3,7 @@ import 'package:demo/route/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../datas/home_list_data.dart';
 
@@ -17,13 +18,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeViewModel viewModel = HomeViewModel();
+  RefreshController refreshController = RefreshController();
 
   @override
   void initState() {
     super.initState();
     viewModel.initDio();
     viewModel.getBanner();
-    viewModel.getDocList();
+    viewModel.getDocList(false);
   }
 
   @override
@@ -34,14 +36,30 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                //轮播图
-                _banner(),
-                //内容区
-                _listView(),
-              ],
+          child: SmartRefresher(
+            controller: refreshController,
+            enablePullUp: true,//开启支持上拉
+            enablePullDown: true,//开启支持下拉
+            header: ClassicHeader(),//上拉样式
+            footer: ClassicFooter(),//下拉样式
+            onLoading: () async {//上拉加载回调
+              await viewModel.getDocList(true);
+              refreshController.loadComplete();
+            },
+            onRefresh:  () async {//下拉刷新回调
+              await viewModel.getBanner();
+              await viewModel.getDocList(false);
+              refreshController.refreshCompleted();
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  //轮播图
+                  _banner(),
+                  //内容区
+                  _listView(),
+                ],
+              ),
             ),
           ),
         ),
