@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import '../../datas/home_list_data.dart';
+import '../../repository/datas/home_list_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,7 +22,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    viewModel.initDio();
     viewModel.getBanner();
     viewModel.getDocList(false);
   }
@@ -76,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           width: double.infinity,
           height: 180,
           child: Swiper(
-            itemCount: vm.bannerList?.length ?? 0,
+            itemCount: vm.bannerList.length ?? 0,
             indicatorLayout: PageIndicatorLayout.COLOR,
             autoplay: true,
             pagination: const SwiperPagination(),
@@ -86,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                 height: 150,
                 color: Colors.lightBlue,
                 child: Image.network(
-                  vm.bannerList?[index].imagePath ?? '',
+                  vm.bannerList[index].imagePath ?? '',
                   fit: BoxFit.fill, //图片填满容器
                 ),
               );
@@ -105,9 +103,9 @@ class _HomePageState extends State<HomePage> {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return _listItemView(viewModel.docList?[index]);
+            return _listItemView(viewModel.docList[index]);
           },
-          itemCount: viewModel.docList?.length ?? 0,
+          itemCount: viewModel.docList.length,
         );
       },
     );

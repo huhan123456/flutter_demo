@@ -28,16 +28,15 @@ class _TabPageState extends State<TabPage> {
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(splashColor: Colors.transparent,highlightColor: Colors.transparent),
         child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           items: _barItemList(),
           onTap: (index) {
             currentPageIndex = index;
             setState(() {});
           },
           currentIndex: currentPageIndex,
-          selectedItemColor: Colors.blue,    // 选中颜色
-          unselectedItemColor: Colors.grey,  // 未选中颜色
-          unselectedLabelStyle: TextStyle(color: Colors.black),
-          selectedLabelStyle: TextStyle(color: Colors.black),
+          selectedLabelStyle: TextStyle(color: Colors.blue,fontSize: 14),
+          unselectedLabelStyle: TextStyle(color: Colors.grey,fontSize: 12),
         ),
       ),
     );
@@ -58,12 +57,12 @@ class _TabPageState extends State<TabPage> {
       BottomNavigationBarItem(
         icon: Icon(Icons.history_outlined, size: 28),
         activeIcon: Icon(Icons.history, size: 30),
-        label: '333',
+        label: '体系',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.history_outlined, size: 28),
         activeIcon: Icon(Icons.history, size: 30),
-        label: '444',
+        label: '我的',
       ),
     ];
   }

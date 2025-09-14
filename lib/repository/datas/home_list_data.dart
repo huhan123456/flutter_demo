@@ -1,39 +1,14 @@
 class HomeListData {
-  HomeListData({this.data, this.errorCode, this.errorMsg});
+  HomeListData({
+      this.curPage, 
+      this.datas, 
+      this.offset, 
+      this.over, 
+      this.pageCount, 
+      this.size, 
+      this.total,});
 
   HomeListData.fromJson(dynamic json) {
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
-    errorCode = json['errorCode'];
-    errorMsg = json['errorMsg'];
-  }
-
-  Data? data;
-  num? errorCode;
-  String? errorMsg;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    if (data != null) {
-      map['data'] = data?.toJson();
-    }
-    map['errorCode'] = errorCode;
-    map['errorMsg'] = errorMsg;
-    return map;
-  }
-}
-
-class Data {
-  Data({
-    this.curPage,
-    this.datas,
-    this.offset,
-    this.over,
-    this.pageCount,
-    this.size,
-    this.total,
-  });
-
-  Data.fromJson(dynamic json) {
     curPage = json['curPage'];
     if (json['datas'] != null) {
       datas = [];
@@ -47,7 +22,6 @@ class Data {
     size = json['size'];
     total = json['total'];
   }
-
   num? curPage;
   List<HomeListItem>? datas;
   num? offset;
@@ -69,46 +43,46 @@ class Data {
     map['total'] = total;
     return map;
   }
+
 }
 
 class HomeListItem {
   HomeListItem({
-    this.adminAdd,
-    this.apkLink,
-    this.audit,
-    this.author,
-    this.canEdit,
-    this.chapterId,
-    this.chapterName,
-    this.collect,
-    this.courseId,
-    this.desc,
-    this.descMd,
-    this.envelopePic,
-    this.fresh,
-    this.host,
-    this.id,
-    this.isAdminAdd,
-    this.link,
-    this.niceDate,
-    this.niceShareDate,
-    this.origin,
-    this.prefix,
-    this.projectLink,
-    this.publishTime,
-    this.realSuperChapterId,
-    this.selfVisible,
-    this.shareDate,
-    this.shareUser,
-    this.superChapterId,
-    this.superChapterName,
-    this.tags,
-    this.title,
-    this.type,
-    this.userId,
-    this.visible,
-    this.zan,
-  });
+      this.adminAdd, 
+      this.apkLink, 
+      this.audit, 
+      this.author, 
+      this.canEdit, 
+      this.chapterId, 
+      this.chapterName, 
+      this.collect, 
+      this.courseId, 
+      this.desc, 
+      this.descMd, 
+      this.envelopePic, 
+      this.fresh, 
+      this.host, 
+      this.id, 
+      this.isAdminAdd, 
+      this.link, 
+      this.niceDate, 
+      this.niceShareDate, 
+      this.origin, 
+      this.prefix, 
+      this.projectLink, 
+      this.publishTime, 
+      this.realSuperChapterId, 
+      this.selfVisible, 
+      this.shareDate, 
+      this.shareUser, 
+      this.superChapterId, 
+      this.superChapterName, 
+      this.tags, 
+      this.title, 
+      this.type, 
+      this.userId, 
+      this.visible, 
+      this.zan,});
 
   HomeListItem.fromJson(dynamic json) {
     adminAdd = json['adminAdd'];
@@ -152,7 +126,6 @@ class HomeListItem {
     visible = json['visible'];
     zan = json['zan'];
   }
-
   bool? adminAdd;
   String? apkLink;
   num? audit;
@@ -230,4 +203,5 @@ class HomeListItem {
     map['zan'] = zan;
     return map;
   }
+
 }

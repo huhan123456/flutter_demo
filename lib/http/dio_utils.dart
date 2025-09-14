@@ -1,3 +1,4 @@
+import 'package:demo/http/base_model.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
@@ -49,7 +50,8 @@ class DioUtils {
       ResponseInterceptorHandler handler,
       ) async {
     _logger.i('Response: ${response.statusCode}');
-    handler.next(response);
+    BaseModel baseModel = BaseModel.fromJson(response.data);
+    handler.next(Response(requestOptions: response.requestOptions,data: baseModel.data));
   }
 
   // 错误拦截器（统一错误处理）
