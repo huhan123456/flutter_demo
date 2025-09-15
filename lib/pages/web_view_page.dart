@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class WebViewPage extends StatefulWidget {
-  const WebViewPage({super.key});
+
+  final String? title;
+  final String? url;
+  const WebViewPage({super.key,this.title,this.url});
 
   @override
   State<StatefulWidget> createState() {
@@ -10,30 +13,25 @@ class WebViewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-  String title = '';
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   final args = ModalRoute.of(context)!.settings.arguments as Map;
-  //   title = args["title"] as String;
-  // }
+  String name = '';
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final args = ModalRoute.of(context)!.settings.arguments as Map;
-    title = args["title"] as String;
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp){
+      var map = ModalRoute.of(context)?.settings.arguments;
+      if(map is Map){
+        name = map['name'];
+        setState(() {});
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     //接受路由参数
-    final args = ModalRoute.of(context)!.settings.arguments as Map;
-    title = args["title"] as String;
-
     return Scaffold(
-       appBar: AppBar(title:Text(title)),
+       appBar: AppBar(title:Text(name)),
         body: SafeArea(child: InkWell(
           onTap: (){
             Navigator.pop(context);
