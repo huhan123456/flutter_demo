@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:demo/http/base_model.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
@@ -5,7 +6,9 @@ import 'package:logger/logger.dart';
 class DioUtils {
   // 单例模式
   static final DioUtils _instance = DioUtils._internal();
+
   factory DioUtils() => _instance;
+
   DioUtils._internal() {
     init(); // 初始化 Dio
   }
@@ -15,26 +18,30 @@ class DioUtils {
 
   // 初始化 Dio 配置
   void init() {
-    dio = Dio(BaseOptions(
-      baseUrl: 'https://www.wanandroid.com/', // 基础 URL
-      connectTimeout: const Duration(seconds: 10), // 连接超时
-      receiveTimeout: const Duration(seconds: 10), // 接收超时
-      contentType: 'application/json', // 默认 Content-Type
-    ));
+    dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://www.wanandroid.com/', // 基础 URL
+        connectTimeout: const Duration(seconds: 10), // 连接超时
+        receiveTimeout: const Duration(seconds: 10), // 接收超时
+        contentType: 'application/json', // 默认 Content-Type
+      ),
+    );
 
     // 添加拦截器
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: _onRequest,
-      onResponse: _onResponse,
-      onError: _onError,
-    ));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: _onRequest,
+        onResponse: _onResponse,
+        onError: _onError,
+      ),
+    );
   }
 
   // 请求拦截器（添加 Token/修改请求头）
   Future<void> _onRequest(
-      RequestOptions options,
-      RequestInterceptorHandler handler,
-      ) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     // 示例：添加 Token
     // final token = await _getToken();
     // if (token != null) {
@@ -46,19 +53,30 @@ class DioUtils {
 
   // 响应拦截器
   Future<void> _onResponse(
-      Response response,
-      ResponseInterceptorHandler handler,
-      ) async {
-    _logger.i('Response: ${response.statusCode}');
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) async {
+    _logger.i('Response: $response');
     BaseModel baseModel = BaseModel.fromJson(response.data);
-    handler.next(Response(requestOptions: response.requestOptions,data: baseModel.data));
+    if (baseModel.errorCode == 0) {
+      handler.next(
+        Response(requestOptions: response.requestOptions, data: baseModel.data),
+      );
+    } else if (baseModel.errorCode == -1001) {
+      //未登录
+      BotToast.showText(text: baseModel.errorMsg ?? '');
+      handler.reject(DioException(requestOptions: response.requestOptions));
+    } else if (baseModel.errorCode == -1) {
+      BotToast.showText(text: baseModel.errorMsg ?? '');
+      handler.reject(DioException(requestOptions: response.requestOptions));
+    }
   }
 
   // 错误拦截器（统一错误处理）
   Future<void> _onError(
-      DioException err,
-      ErrorInterceptorHandler handler,
-      ) async {
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     _logger.e('Error: ${err.type} ${err.message}');
     handler.next(err);
   }
@@ -69,10 +87,10 @@ class DioUtils {
   }
 
   Future<Response> get(
-      String path, {
-        Map<String, dynamic>? queryParams,
-        Options? options,
-      }) async {
+    String path, {
+    Map<String, dynamic>? queryParams,
+    Options? options,
+  }) async {
     try {
       return await dio.get(
         path,
@@ -86,11 +104,11 @@ class DioUtils {
   }
 
   Future<Response> post(
-      String path, {
-        dynamic data,
-        Map<String, dynamic>? queryParams,
-        Options? options,
-      }) async {
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParams,
+    Options? options,
+  }) async {
     try {
       return await dio.post(
         path,

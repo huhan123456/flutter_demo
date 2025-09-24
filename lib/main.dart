@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:demo/route/routes.dart';
 import 'package:flutter/material.dart';
 import 'http/dio_utils.dart';
@@ -20,6 +21,8 @@ class MyApp extends StatelessWidget {
       ),
       onGenerateRoute: Routes.generateRoute,
       initialRoute: RoutePath.tab,
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
     );
   }
 }

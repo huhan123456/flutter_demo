@@ -1,5 +1,6 @@
 import 'package:demo/repository/datas/common_website_data.dart';
 import 'package:demo/repository/datas/home_list_data.dart';
+import 'package:demo/repository/datas/register_data.dart';
 import 'package:dio/dio.dart';
 
 import '../http/dio_utils.dart';
@@ -34,6 +35,31 @@ class Api {
   //获取搜索热点
   Future<SearchHotKeyDataList> getSearchHotKey() async {
     Response response = await DioUtils().get('hotkey/json');
+    SearchHotKeyDataList searchHotKeyDataList= SearchHotKeyDataList.fromJson(response.data);
+    return searchHotKeyDataList;
+  }
+  //登录
+  Future<SearchHotKeyDataList> login(username,password) async {
+    Response response = await DioUtils().post('user/login',queryParams: {
+      'username':username,
+      'password':password,
+    });
+    SearchHotKeyDataList searchHotKeyDataList= SearchHotKeyDataList.fromJson(response.data);
+    return searchHotKeyDataList;
+  }
+  //注册
+  Future<RegisterData> register(username,password,rePassword) async {
+    Response response = await DioUtils().post('user/register',queryParams: {
+      'username':username,
+      'password':password,
+      'repassword':rePassword,
+    });
+    RegisterData registerData= RegisterData.fromJson(response.data);
+    return registerData;
+  }
+  //退出
+  Future<SearchHotKeyDataList> logout() async {
+    Response response = await DioUtils().get('user/logout/json');
     SearchHotKeyDataList searchHotKeyDataList= SearchHotKeyDataList.fromJson(response.data);
     return searchHotKeyDataList;
   }
