@@ -1,4 +1,5 @@
 import 'package:demo/repository/datas/register_data.dart';
+import 'package:demo/repository/datas/user_data.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../repository/api.dart';
@@ -9,9 +10,10 @@ class AuthViewModel with ChangeNotifier {
   LoginInfo loginInfo = LoginInfo();
 
   //登录
-  Future login(username, password) async {
-    var searchHotKeyDataList = await Api.instance.login(registerInfo.username, registerInfo.password);
+  Future<UserData> login(username, password) async {
+    UserData userData = await Api.instance.login(loginInfo.username, loginInfo.password);
     notifyListeners();
+    return userData;
   }
 
   //注册

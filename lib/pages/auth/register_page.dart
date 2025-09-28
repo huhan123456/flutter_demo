@@ -163,6 +163,7 @@ Widget _register(AuthViewModel vm,context) {
         // 注册
         RegisterData registerData = await vm.register();
         if(registerData.id != null){
+          BotToast.showText(text: '注册成功');
           Navigator.push(context, MaterialPageRoute(
             builder: (context) => LoginPage(),
           ));

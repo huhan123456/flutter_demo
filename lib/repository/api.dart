@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import '../http/dio_utils.dart';
 import 'datas/home_banner_data.dart';
 import 'datas/search_hot_key_data.dart';
+import 'datas/user_data.dart';
 
 class Api {
   static Api instance = Api._();
@@ -39,13 +40,13 @@ class Api {
     return searchHotKeyDataList;
   }
   //登录
-  Future<SearchHotKeyDataList> login(username,password) async {
+  Future<UserData> login(username,password) async {
     Response response = await DioUtils().post('user/login',queryParams: {
       'username':username,
       'password':password,
     });
-    SearchHotKeyDataList searchHotKeyDataList= SearchHotKeyDataList.fromJson(response.data);
-    return searchHotKeyDataList;
+    UserData userData= UserData.fromJson(response.data);
+    return userData;
   }
   //注册
   Future<RegisterData> register(username,password,rePassword) async {
